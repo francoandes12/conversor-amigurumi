@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import { Grid, Paper, Button } from '@material-ui/core'
+import { Grid, Paper, Button, Divider } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
 import './App.css'
 function App() {
@@ -10,9 +10,10 @@ function App() {
     sinAumento,
     maximo,
     totalFilasOriginal,
-    aguja
+    aguja,
+    secuencia
   ) => {
-    if (maximo % 6 !== 0) {
+    if (maximo % secuencia !== 0) {
       setErrorMsg('error, el maximo deseado debe ser multiplo de 6')
     }
     if (
@@ -20,15 +21,17 @@ function App() {
       sinAumento > 0 &&
       maximo % 6 === 0 &&
       totalFilasOriginal > 0 &&
-      aguja > 0
+      aguja > 0 &&
+      secuencia > 0
     ) {
       let fsAumento = Math.round(
         (parseInt(maximo) * parseInt(sinAumento)) / parseInt(puntosMaximos)
       )
       setTotalFilasSinAumento(fsAumento)
-      let diferencia = (parseInt(maximo) - parseInt(puntosMaximos)) / 6
+      let diferencia = (parseInt(maximo) - parseInt(puntosMaximos)) / secuencia
       diferencia = diferencia + (parseInt(fsAumento) - parseInt(sinAumento))
-      diferencia = diferencia + (parseInt(maximo) - parseInt(puntosMaximos)) / 6
+      diferencia =
+        diferencia + (parseInt(maximo) - parseInt(puntosMaximos)) / secuencia
       diferencia += parseInt(totalFilasOriginal)
       console.log(diferencia)
       setFilasPatronNuevo(diferencia)
@@ -47,6 +50,7 @@ function App() {
   const [totalFilasSinAumento, setTotalFilasSinAumento] = useState(0)
   const [filasPatronNuevo, setFilasPatronNuevo] = useState(0)
   const [tamañoTotalModificado, setTamañoTotalModificado] = useState(0)
+  const [secuenciaMultiplo, setSecuenciaMultiplo] = useState(0)
   const handleSubmit = (e) => {
     e.preventDefault()
     calcularFilasSinAumento(
@@ -54,20 +58,22 @@ function App() {
       filasSinAumento,
       maximoDeseado,
       totalFilasPatronOriginal,
-      mmAgujas
+      mmAgujas,
+      secuenciaMultiplo
     )
     setPuntosMax(0)
     setMaximoDeseado(0)
     setFilasSinAumento(0)
     setTotalFilasPatronOriginal(0)
     setMmAgujas(0)
+    setSecuenciaMultiplo(0)
   }
   return (
     <div>
       <Typography variant='h4' align='center' style={{ marginBottom: '10px' }}>
         Conversor Tamaño Amigurumis
       </Typography>
-      <Paper>
+      <Paper style={{ marginBottom: '6rem' }}>
         <form onSubmit={handleSubmit}>
           <Grid container direction='row' spacing={2} justify='center'>
             <Grid item xs={12} md={6}>
@@ -94,7 +100,7 @@ function App() {
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <TextField
-                    variant='outlined'
+                    variant='filled'
                     label='Filas sin aumento'
                     type='number'
                     value={filasSinAumento}
@@ -108,7 +114,7 @@ function App() {
                 <Grid item xs={12} md={6}>
                   <TextField
                     type='number'
-                    variant='outlined'
+                    variant='filled'
                     label='Maximo deseado'
                     value={maximoDeseado}
                     onChange={(e) => setMaximoDeseado(e.target.value)}
@@ -121,7 +127,7 @@ function App() {
                 <Grid item xs={12} md={6}>
                   <TextField
                     type='number'
-                    variant='outlined'
+                    variant='filled'
                     label='Total filas original'
                     value={totalFilasPatronOriginal}
                     onChange={(e) =>
@@ -136,10 +142,23 @@ function App() {
                 <Grid item xs={12} md={6}>
                   <TextField
                     type='number'
-                    variant='outlined'
+                    variant='filled'
                     label='mm Aguja'
                     value={mmAgujas}
                     onChange={(e) => setMmAgujas(e.target.value)}
+                    inputProps={{
+                      style: { fontSize: '1.4rem' },
+                    }}
+                    InputLabelProps={{ style: { fontSize: '1.3rem' } }}
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    type='number'
+                    variant='filled'
+                    label='Secuencia'
+                    value={secuenciaMultiplo}
+                    onChange={(e) => setSecuenciaMultiplo(e.target.value)}
                     inputProps={{
                       style: { fontSize: '1.4rem' },
                     }}
@@ -193,6 +212,26 @@ function App() {
           </Grid>
         </form>
       </Paper>
+      <div
+        style={{
+          position: 'fixed',
+          left: '0',
+          bottom: '0',
+          width: '100%',
+          color: 'white',
+          backgroundColor: 'black',
+          textAlign: 'center',
+          padding: '10px',
+        }}
+      >
+        <Typography variant='subtitle1' color='initial'>
+          Creado por Franco Ibarra
+        </Typography>
+        <Divider />
+        <Typography variant='subtitle1' color='initial'>
+          Carol Nichepurenco.
+        </Typography>
+      </div>
     </div>
   )
 }
