@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { Grid, Paper, Button } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
-import './app.css'
+import './App.css'
 function App() {
   const calcularFilasSinAumento = (
     puntosMaximos,
